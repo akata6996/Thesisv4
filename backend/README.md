@@ -26,9 +26,13 @@ FastAPI backend for the AEGIS gateway website/database layer.
 
 - `GET /api/v1/health/live`
 - `GET /api/v1/health/ready`
+- `POST /api/v1/auth/bootstrap` (only works when there are zero users)
+- `POST /api/v1/auth/login`
+- `GET /api/v1/auth/me`
+- `GET /api/v1/auth/operator-check`
 
-## Phase 2 status
+## Phase 3 status
 
-- Core SQLAlchemy models added for users, enrollment, session state, verification/rejection logs,
-  Merkle/anchor records, admin action log, and audit exports.
-- Initial Alembic migration added at `alembic/versions/20260330_0001_initial_phase2_schema.py`.
+- Added JWT-based local auth flow with PBKDF2 password hashing (passlib).
+- Added role guard dependency for operator-only endpoints.
+- Added append-only admin audit logging service and wired login events (`user_login`) into `admin_action_log`.
