@@ -30,9 +30,12 @@ FastAPI backend for the AEGIS gateway website/database layer.
 - `POST /api/v1/auth/login`
 - `GET /api/v1/auth/me`
 - `GET /api/v1/auth/operator-check`
+- `POST /api/v1/admin/nodes/enroll` (operator only)
+- `GET /api/v1/admin/nodes` (authenticated users)
+- `POST /api/v1/admin/session/reset` (operator only)
 
-## Phase 3 status
+## Phase 4 status
 
-- Added JWT-based local auth flow with PBKDF2 password hashing (passlib).
-- Added role guard dependency for operator-only endpoints.
-- Added append-only admin audit logging service and wired login events (`user_login`) into `admin_action_log`.
+- Added node enrollment API with operator-only guard and append-only admin action logging.
+- Added session reset API with operator-only guard and append-only admin action logging.
+- Added node registry listing API for authenticated observability users.
