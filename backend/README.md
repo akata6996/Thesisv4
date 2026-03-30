@@ -1,6 +1,6 @@
-# AEGIS Backend (Initial Scaffold)
+# AEGIS Backend
 
-This folder contains the FastAPI backend scaffold for the AEGIS website/database layer.
+FastAPI backend for the AEGIS gateway website/database layer.
 
 ## Quick start
 
@@ -13,7 +13,11 @@ This folder contains the FastAPI backend scaffold for the AEGIS website/database
    ```bash
    cp .env.example .env
    ```
-4. Run API:
+4. Run migrations:
+   ```bash
+   alembic upgrade head
+   ```
+5. Run API:
    ```bash
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
@@ -23,7 +27,8 @@ This folder contains the FastAPI backend scaffold for the AEGIS website/database
 - `GET /api/v1/health/live`
 - `GET /api/v1/health/ready`
 
-## Notes
+## Phase 2 status
 
-- SQLite is configured with WAL mode via SQLAlchemy connection event.
-- This is Phase 1 scaffold; business modules and migrations are added incrementally.
+- Core SQLAlchemy models added for users, enrollment, session state, verification/rejection logs,
+  Merkle/anchor records, admin action log, and audit exports.
+- Initial Alembic migration added at `alembic/versions/20260330_0001_initial_phase2_schema.py`.
