@@ -33,11 +33,15 @@ FastAPI backend for the AEGIS gateway website/database layer.
 - `POST /api/v1/admin/nodes/enroll` (operator only)
 - `GET /api/v1/admin/nodes` (authenticated users)
 - `POST /api/v1/admin/session/reset` (operator only)
+- `GET /api/v1/observability/verification-log`
+- `GET /api/v1/observability/verification-log/{verification_id}`
+- `GET /api/v1/observability/rejection-log`
+- `GET /api/v1/observability/merkle-batches`
+- `GET /api/v1/observability/anchors`
+- `GET /api/v1/observability/dashboard-summary`
 
-## Phase 4 status
+## Phase 5 status
 
-- Added node enrollment API with operator-only guard and append-only admin action logging.
-- Added session reset API with operator-only guard and append-only admin action logging.
-- Added node registry listing API for authenticated observability users.
-
+- Added read-only observability APIs for verification logs, rejection logs, merkle batches, anchors, verification detail, and dashboard summary.
+- Added filtering and pagination controls for list endpoints.
 - Admin write operations commit domain mutation and audit append atomically.

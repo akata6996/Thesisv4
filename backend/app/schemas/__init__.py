@@ -8,6 +8,14 @@ from app.schemas.admin import (
     SessionResetResponse,
 )
 from app.schemas.auth import BootstrapRequest, LoginRequest, TokenResponse, UserMeResponse
+from app.schemas.observability import (
+    BlockchainAnchorItem,
+    DashboardSummaryResponse,
+    MerkleBatchItem,
+    RejectionLogItem,
+    VerificationDetailResponse,
+    VerificationLogItem,
+)
 
 __all__ = [
     "BootstrapRequest",
@@ -19,4 +27,10 @@ __all__ = [
     "NodeRegistryItem",
     "SessionResetRequest",
     "SessionResetResponse",
+    "VerificationLogItem",
+    "VerificationDetailResponse",
+    "RejectionLogItem",
+    "MerkleBatchItem",
+    "BlockchainAnchorItem",
+    "DashboardSummaryResponse",
 ]
