@@ -49,3 +49,4 @@ FastAPI backend for the AEGIS gateway website/database layer.
 - Added `20260330_0002_append_only_guards.py` for append-only triggers and composite indexes.
 
 - Detailed API contract: `../docs/phase3_api_design.md`.
+- Frontend page design: `../docs/phase4_frontend_design.md`.
