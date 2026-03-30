@@ -25,7 +25,13 @@ def append_admin_action(
     target_id: str,
     action_payload_json: str,
     request_id: str | None = None,
+    auto_commit: bool = True,
 ) -> AdminActionLog:
+    """Append a hash-linked admin action entry.
+
+    Set `auto_commit=False` when composing multi-step operations so caller can
+    commit domain mutation and audit append atomically in one transaction.
+    """
     prev_hash = _next_prev_hash(db)
     record_for_hash: dict[str, Any] = {
         "actor_user_id": actor_user_id,
@@ -49,6 +55,9 @@ def append_admin_action(
         curr_hash=curr_hash,
     )
     db.add(row)
-    db.commit()
-    db.refresh(row)
+    if auto_commit:
+        db.commit()
+        db.refresh(row)
+    else:
+        db.flush()
     return row

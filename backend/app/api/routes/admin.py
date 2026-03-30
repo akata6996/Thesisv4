@@ -38,17 +38,23 @@ def enroll_node_endpoint(
             pubkey_fingerprint=payload.pubkey_fingerprint,
             enrolled_by_user_id=operator.id,
         )
+        append_admin_action(
+            db,
+            actor_user_id=operator.id,
+            action_type=AdminActionType.node_enroll,
+            target_type="node",
+            target_id=row.node_id,
+            action_payload_json=json.dumps(payload.model_dump()),
+            auto_commit=False,
+        )
+        db.commit()
+        db.refresh(row)
     except EnrollmentError as exc:
+        db.rollback()
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
-
-    append_admin_action(
-        db,
-        actor_user_id=operator.id,
-        action_type=AdminActionType.node_enroll,
-        target_type="node",
-        target_id=row.node_id,
-        action_payload_json=json.dumps(payload.model_dump()),
-    )
+    except Exception:
+        db.rollback()
+        raise
 
     return NodeEnrollmentResponse(
         id=row.id,
@@ -87,15 +93,22 @@ def reset_session_endpoint(
     db: Session = Depends(get_db),
     operator: User = Depends(require_operator),
 ) -> SessionResetResponse:
-    state = reset_enforcement_session(db)
-    append_admin_action(
-        db,
-        actor_user_id=operator.id,
-        action_type=AdminActionType.session_reset,
-        target_type="session_state",
-        target_id=str(state.id),
-        action_payload_json=json.dumps({"reason": payload.reason, "new_session_id": state.current_session_id}),
-    )
+    try:
+        state = reset_enforcement_session(db)
+        append_admin_action(
+            db,
+            actor_user_id=operator.id,
+            action_type=AdminActionType.session_reset,
+            target_type="session_state",
+            target_id=str(state.id),
+            action_payload_json=json.dumps({"reason": payload.reason, "new_session_id": state.current_session_id}),
+            auto_commit=False,
+        )
+        db.commit()
+        db.refresh(state)
+    except Exception:
+        db.rollback()
+        raise
 
     return SessionResetResponse(
         current_session_id=state.current_session_id,

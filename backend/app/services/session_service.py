@@ -13,16 +13,15 @@ def ensure_session_state(db: Session) -> SessionState:
     if row is None:
         row = SessionState(id=1)
         db.add(row)
-        db.commit()
-        db.refresh(row)
+        db.flush()
     return row
 
 
 def reset_enforcement_session(db: Session) -> SessionState:
+    """Prepare session reset mutation; caller is responsible for commit."""
     row = ensure_session_state(db)
     row.current_session_id = uuid4_str()
     row.session_started_at = utcnow()
     row.reset_counter += 1
-    db.commit()
-    db.refresh(row)
+    db.flush()
     return row

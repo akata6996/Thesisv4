@@ -69,6 +69,13 @@ def test_enroll_and_reset_requires_operator(tmp_path: Path) -> None:
     )
     assert enroll.status_code == 201
 
+    duplicate = client.post(
+        "/api/v1/admin/nodes/enroll",
+        json={"node_id": "esp32-01", "display_name": "Lab Node 01"},
+        headers={"Authorization": f"Bearer {operator_token}"},
+    )
+    assert duplicate.status_code == 409
+
     list_nodes = client.get("/api/v1/admin/nodes", headers={"Authorization": f"Bearer {viewer_token}"})
     assert list_nodes.status_code == 200
     assert len(list_nodes.json()) == 1

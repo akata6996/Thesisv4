@@ -39,3 +39,5 @@ FastAPI backend for the AEGIS gateway website/database layer.
 - Added node enrollment API with operator-only guard and append-only admin action logging.
 - Added session reset API with operator-only guard and append-only admin action logging.
 - Added node registry listing API for authenticated observability users.
+
+- Admin write operations commit domain mutation and audit append atomically.
